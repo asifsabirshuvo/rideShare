@@ -41,8 +41,8 @@
             android:gravity="center"
             android:id="@+id/et_phone_login"
             android:hint="Your Phone"
-            android:backgroundTint="@color/colorPrimaryDark"
             android:inputType="number"
+            android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
 
@@ -54,6 +54,7 @@
             android:id="@+id/et_password_login"
             android:hint="Your password"
             android:inputType="textPassword"
+            android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
         <RadioGroup

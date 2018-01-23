@@ -45,7 +45,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         driverRegBtn = (Button) findViewById(R.id.button_driver_reg);
         etPhone = (EditText) findViewById(R.id.et_phone_login);
         etPassword = (EditText) findViewById(R.id.et_password_login);
-        pbLoading =(ProgressBar)findViewById(R.id.pb_loading);
+        pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
 
         if (Build.VERSION.SDK_INT >= 23) {
             permissionCheck();
@@ -142,6 +142,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                 } else {
                     DriverReg driverReg = snapshot.getValue(DriverReg.class);
+
                     if (driverReg.password.toString().trim().equals(password)) {
                         Toast.makeText(LoginScreenActivity.this, "Welcome driver:" + driverReg.fullName, Toast.LENGTH_SHORT).show();
 
