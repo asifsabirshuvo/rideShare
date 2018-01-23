@@ -3,6 +3,7 @@ package com.example.asifsabir.rideshareapp;
 import android.*;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class LoginScreenActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton radioButton;
+    ProgressBar pbLoading;
     EditText etPhone, etPassword;
     private Button loginBtn, riderRegBtn, driverRegBtn;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2;
@@ -42,6 +45,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         driverRegBtn = (Button) findViewById(R.id.button_driver_reg);
         etPhone = (EditText) findViewById(R.id.et_phone_login);
         etPassword = (EditText) findViewById(R.id.et_password_login);
+        pbLoading =(ProgressBar)findViewById(R.id.pb_loading);
 
         if (Build.VERSION.SDK_INT >= 23) {
             permissionCheck();
@@ -82,6 +86,9 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                 String radioText = radioButton.getText().toString();
                 loginToDb(etPhone.getText().toString(), etPassword.getText().toString(), radioText);
+
+                //viewing loading bar
+                pbLoading.setVisibility(View.VISIBLE);
 
             }
 
@@ -125,8 +132,8 @@ public class LoginScreenActivity extends AppCompatActivity {
                         //sending data to rider activity
 
                         Intent i = new Intent(LoginScreenActivity.this, RiderMainAcitivity.class);
-                        String riderPhone = riderReg.mobile;
-                        i.putExtra("riderPhone", riderPhone);
+                        i.putExtra("riderName", riderReg.fullName);
+                        i.putExtra("riderPhone", riderReg.mobile);
                         startActivity(i);
                         finish();
 

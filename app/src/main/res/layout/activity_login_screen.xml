@@ -51,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:backgroundTint="@color/colorPrimaryDark"
             android:id="@+id/et_password_login"
             android:hint="Your password"
             android:inputType="textPassword"
@@ -77,19 +76,33 @@
                 android:id="@+id/radioFemale"
                 android:textColor="@android:color/white"
                 android:layout_marginLeft="10dp"
+                android:backgroundTint="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Driver" />
 
         </RadioGroup>
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/button_login"
-            android:backgroundTint="@android:color/holo_blue_light"
-            android:text="Login"
-            android:textColor="@android:color/white" />
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/button_login"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Login"
+                android:textColor="@android:color/white" />
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
