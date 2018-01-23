@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center"
+            android:id="@+id/et_email_login"
             android:hint="Your email"
             android:backgroundTint="@color/colorPrimaryDark"
             android:inputType="textEmailAddress"
@@ -51,7 +52,7 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:backgroundTint="@color/colorPrimaryDark"
-
+            android:id="@+id/et_password_login"
             android:hint="Your password"
             android:inputType="textPassword"
             android:textColor="@android:color/white"

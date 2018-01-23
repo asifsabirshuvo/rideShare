@@ -1,9 +1,13 @@
 package com.example.asifsabir.rideshareapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +26,12 @@ public class RiderRegistrationActivity extends AppCompatActivity {
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     Button registerButton;
-    EditText etName, etPhone, etPassword, etNid;
+    EditText etName, etPhone, etPassword, etNid,etEmail;
+
+    GPSTracker gps;
+    double latOfSensor = 0, lonOfSensor = 0;
+    String latitude = "", longitude = "";
+    final Handler ha = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,25 +43,50 @@ public class RiderRegistrationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         etName = (EditText) findViewById(R.id.et_fullName);
-        etPassword = (EditText) findViewById(R.id.et_password);
+        etPassword = (EditText) findViewById(R.id.et_password_rider);
+        etEmail = (EditText) findViewById(R.id.et_email_rider);
         etPhone = (EditText) findViewById(R.id.et_mobile);
         etNid = (EditText) findViewById(R.id.et_nid);
         registerButton = (Button) findViewById(R.id.button_register_rider);
 
+        //getting gps data
+        gps = new GPSTracker(RiderRegistrationActivity.this);
+
+        // check if GPS enabled
+        if (gps.canGetLocation() && gps.getLatitude() != 0) {
+
+            latOfSensor = gps.getLatitude();
+            lonOfSensor = gps.getLongitude();
+
+            //button enable kore dao
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
 
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String latitude = "10", longitude = "10", fullName, password,phoneNumber,nid;
+                String fullName, password,phoneNumber,nid,email;
 
                 fullName = etName.getText().toString().trim();
                 password = etPassword.getText().toString().trim();
                 phoneNumber = etPhone.getText().toString().trim();
                 nid = etNid.getText().toString().trim();
-
-
+                email = etEmail.getText().toString().trim();
+                if (latOfSensor ==0) {
+                    gps.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), "Error getting location!", Toast.LENGTH_LONG).show();
+                    Log.e("Error", "location error1");
+                } else {
+                    latitude = String.valueOf(latOfSensor);
+                    longitude = String.valueOf(lonOfSensor);
+                }
 
 
                 if (fullName.equals("") || password.equals("") ||
@@ -66,9 +100,9 @@ public class RiderRegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    DatabaseReference myRef = database.getReference("Riders").push();
-                    RiderReg rider = new RiderReg(fullName, password, phoneNumber,
-                            nid,latitude, longitude);
+                    DatabaseReference myRef = database.getReference("Rider").child(email);
+                    RiderReg rider = new RiderReg(fullName, password, phoneNumber,email,
+                            nid,latitude, longitude,"5");
                     myRef.setValue(rider);
                     Toast.makeText(RiderRegistrationActivity.this, "Successful Registration", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RiderRegistrationActivity.this, LoginScreenActivity.class));
@@ -82,7 +116,11 @@ public class RiderRegistrationActivity extends AppCompatActivity {
 
 
 
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        locationThread();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -97,6 +135,41 @@ public class RiderRegistrationActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+
+    public void locationThread() {
+        gps = new GPSTracker(RiderRegistrationActivity.this);
+
+        ha.postDelayed(new Runnable() {
+
+            @SuppressLint("NewApi")
+            @Override
+            public void run() {
+                //call function
+                if (gps.getLocation() == null) {
+                    gps.showSettingsAlert();
+                } else {
+
+                    // check if GPS enabled
+                    if (gps.canGetLocation() && gps.getLatitude() != 0) {
+                        latOfSensor = gps.getLatitude();
+                        lonOfSensor = gps.getLongitude();
+                        Toast.makeText(getApplicationContext(), "Location found!", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        // can't get location
+                        // GPS or Network is not enabled
+                        // Ask user to enable GPS/network in settings
+                        gps.showSettingsAlert();
+                    }
+                    if (gps.getLatitude() == 0)
+                        ha.postDelayed(this, 3000);
+                }
+            }
+
+        }, 3000);
 
     }
 }
