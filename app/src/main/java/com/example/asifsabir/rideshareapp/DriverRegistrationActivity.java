@@ -117,7 +117,7 @@ public class DriverRegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    DatabaseReference myRef = database.getReference("Driver").child(email);
+                    DatabaseReference myRef = database.getReference("Driver").child(phoneNumber);
                     DriverReg driver = new DriverReg(fullName, email, password, phoneNumber, age,
                             nid, vehicleNumber, vehicleType,
                             latitude, longitude, "5");

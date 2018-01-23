@@ -100,7 +100,7 @@ public class RiderRegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    DatabaseReference myRef = database.getReference("Rider").child(email);
+                    DatabaseReference myRef = database.getReference("Rider").child(phoneNumber);
                     RiderReg rider = new RiderReg(fullName, password, phoneNumber,email,
                             nid,latitude, longitude,"5");
                     myRef.setValue(rider);

@@ -30,7 +30,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class LoginScreenActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton radioButton;
-    EditText etEmail, etPassword;
+    EditText etPhone, etPassword;
     private Button loginBtn, riderRegBtn, driverRegBtn;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2;
 
@@ -40,7 +40,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_screen);
         riderRegBtn = (Button) findViewById(R.id.button_rider_reg);
         driverRegBtn = (Button) findViewById(R.id.button_driver_reg);
-        etEmail = (EditText) findViewById(R.id.et_email_login);
+        etPhone = (EditText) findViewById(R.id.et_phone_login);
         etPassword = (EditText) findViewById(R.id.et_password_login);
 
         if (Build.VERSION.SDK_INT >= 23) {
@@ -81,7 +81,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 radioButton = (RadioButton) findViewById(selectedId);
 
                 String radioText = radioButton.getText().toString();
-                loginToDb(etEmail.getText().toString(), etPassword.getText().toString(), radioText);
+                loginToDb(etPhone.getText().toString(), etPassword.getText().toString(), radioText);
 
             }
 
@@ -109,9 +109,9 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
 
-    public void loginToDb(final String email, final String password, final String user) {
+    public void loginToDb(final String phone, final String password, final String user) {
         //checking whether the user is registered or not, if then send to MainActivity
-        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(user).child(email);
+        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(user).child(phone);
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -120,14 +120,32 @@ public class LoginScreenActivity extends AppCompatActivity {
                     RiderReg riderReg = snapshot.getValue(RiderReg.class);
 
                     if (riderReg.password.toString().trim().equals(password)) {
-                        Toast.makeText(LoginScreenActivity.this, "Rider found: " + riderReg.fullName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginScreenActivity.this, "Welcome rider:" + riderReg.fullName, Toast.LENGTH_SHORT).show();
+
+                        //sending data to rider activity
+
+                        Intent i = new Intent(LoginScreenActivity.this, RiderMainAcitivity.class);
+                        String riderPhone = riderReg.mobile;
+                        i.putExtra("riderPhone", riderPhone);
+                        startActivity(i);
+                        finish();
+
                     }
 
 
                 } else {
                     DriverReg driverReg = snapshot.getValue(DriverReg.class);
                     if (driverReg.password.toString().trim().equals(password)) {
-                        Toast.makeText(LoginScreenActivity.this, "Rider found: " + driverReg.fullName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginScreenActivity.this, "Welcome driver:" + driverReg.fullName, Toast.LENGTH_SHORT).show();
+
+                        //sending data to driver activity
+
+                        Intent i = new Intent(LoginScreenActivity.this, DriverMainActivity.class);
+                        String driverPhone = driverReg.mobile;
+                        i.putExtra("driverPhone", driverPhone);
+                        startActivity(i);
+                        finish();
+
                     }
 
                 }

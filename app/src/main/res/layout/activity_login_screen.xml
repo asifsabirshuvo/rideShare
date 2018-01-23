@@ -39,10 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:id="@+id/et_email_login"
-            android:hint="Your email"
+            android:id="@+id/et_phone_login"
+            android:hint="Your Phone"
             android:backgroundTint="@color/colorPrimaryDark"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
 
