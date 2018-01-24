@@ -48,8 +48,9 @@ public class RiderMainAcitivity extends AppCompatActivity {
         btnDriversMap = (Button) findViewById(R.id.button_see_map);
         btnSendReq = (Button) findViewById(R.id.button_request_ride);
         //retrieving phone data
-        String riderName = getIntent().getExtras().getString("riderName", null);
-        String riderPhone = getIntent().getExtras().getString("riderPhone", null);
+        final String riderName = getIntent().getExtras().getString("riderName", null);
+        final String riderPhone = getIntent().getExtras().getString("riderPhone", null);
+
 
         tvRiderName.setText(riderName);
         tvRiderMobile.setText(riderPhone);
@@ -57,7 +58,10 @@ public class RiderMainAcitivity extends AppCompatActivity {
         btnDriversMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ShowDriversMap.class));
+                Intent i = new Intent(RiderMainAcitivity.this, ShowDriversMap.class);
+                i.putExtra("riderName", riderName);
+                i.putExtra("riderPhone", riderPhone);
+                startActivity(i);
                 finish();
             }
         });
@@ -83,12 +87,12 @@ public class RiderMainAcitivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
 
 
-                    for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
 
-                        DriverReg studentDetails = dataSnapshot1.getValue(DriverReg.class);
+                    DriverReg studentDetails = dataSnapshot1.getValue(DriverReg.class);
 
-                        list.add(studentDetails);
-                    }
+                    list.add(studentDetails);
+                }
 
 
                 adapter = new RecyclerViewAdapter(RiderMainAcitivity.this, list);

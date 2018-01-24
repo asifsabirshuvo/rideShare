@@ -33,7 +33,8 @@ public class ShowDriversMap extends AppCompatActivity implements OnMapReadyCallb
     public DatabaseReference databaseDriverReference;
     public GoogleMap mMap;
     GPSTracker gps;
-    double latMy,lonMy;
+    double latMy, lonMy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +100,7 @@ public class ShowDriversMap extends AppCompatActivity implements OnMapReadyCallb
                     double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue(String.class).toString());
                     double longitude = Double.parseDouble(dataSnapshot.child("lon").getValue(String.class).toString());
 
-                    if(driverVehicleType.equals("Bike")){
+                    if (driverVehicleType.equals("Bike")) {
                         mMap.addMarker(new MarkerOptions()
                                 .title(driverVehicleType)
                                 .snippet("Driver name:" + driverName)
@@ -110,8 +111,7 @@ public class ShowDriversMap extends AppCompatActivity implements OnMapReadyCallb
                                         longitude
                                 ))
                         );
-                    }
-                    else{
+                    } else {
                         mMap.addMarker(new MarkerOptions()
                                 .title(driverVehicleType)
                                 .snippet("Driver name:" + driverName)
@@ -175,7 +175,10 @@ public class ShowDriversMap extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(ShowDriversMap.this, RiderMainAcitivity.class));
+
+        startActivity(new Intent(ShowDriversMap.this, RiderMainAcitivity.class)
+                .putExtra("riderName", getIntent().getExtras().getString("riderName", null))
+                .putExtra("riderPhone", getIntent().getExtras().getString("riderPhone", null)));
     }
 
 }
