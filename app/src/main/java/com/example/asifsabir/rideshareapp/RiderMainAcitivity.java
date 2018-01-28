@@ -65,6 +65,16 @@ public class RiderMainAcitivity extends AppCompatActivity {
                 finish();
             }
         });
+        btnSendReq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RiderMainAcitivity.this, MapsActivity.class);
+                i.putExtra("riderName", riderName);
+                i.putExtra("riderPhone", riderPhone);
+                startActivity(i);
+                finish();
+            }
+        });
 
 
         //showing list view

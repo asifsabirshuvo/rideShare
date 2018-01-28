@@ -161,6 +161,8 @@ public class ShowDriversMap extends AppCompatActivity implements OnMapReadyCallb
         switch (item.getItemId()) {
             case android.R.id.home: {
                 Intent intent = new Intent(this, RiderMainAcitivity.class);
+                intent.putExtra("riderName", getIntent().getExtras().getString("riderName", null))
+                        .putExtra("riderPhone", getIntent().getExtras().getString("riderPhone", null));
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityIfNeeded(intent, 0);
@@ -179,6 +181,7 @@ public class ShowDriversMap extends AppCompatActivity implements OnMapReadyCallb
         startActivity(new Intent(ShowDriversMap.this, RiderMainAcitivity.class)
                 .putExtra("riderName", getIntent().getExtras().getString("riderName", null))
                 .putExtra("riderPhone", getIntent().getExtras().getString("riderPhone", null)));
+        finish();
     }
 
 }
