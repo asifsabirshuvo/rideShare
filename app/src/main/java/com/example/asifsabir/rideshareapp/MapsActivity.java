@@ -13,11 +13,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.text.Layout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -37,6 +39,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,11 +49,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private static final int LOCATION_REQUEST = 500;
     ArrayList<LatLng> listPoints;
+    Button btnReqRides;
+    TextView  tvFare,tvDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        btnReqRides = (Button) findViewById(R.id.button_req_riders);
+        tvDistance= (TextView)findViewById(R.id.tv_distance);
+        tvFare= (TextView)findViewById(R.id.tv_fare);
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -58,6 +67,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mapFragment.getMapAsync(this);
         listPoints = new ArrayList<>();
+
+
+        btnReqRides.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MapsActivity.this, "clicked !", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -107,7 +124,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_stop))
                             .title("finishing position");
                     Toast.makeText(MapsActivity.this, "Destination Set!", Toast.LENGTH_SHORT).show();
+                    btnReqRides.setVisibility(View.VISIBLE);
 
+                    //show distance
+                    int dist=   showDistance(listPoints.get(0), listPoints.get(1));
+                    tvDistance.setText(dist+" KM");
+                    //show bill
+                    int fare = showFare(dist);
+                    tvFare.setText(fare+" tk");
                 }
                 mMap.addMarker(markerOptions);
 
@@ -188,6 +212,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
     public class TaskRequestDirections extends AsyncTask<String, Void, String> {
 
         @Override
@@ -255,13 +280,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addPolyline(polylineOptions);
             } else {
                 Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
-            }
+                tvDistance.setText("Error");
+                tvFare.setText("Error");
 
+            }
         }
     }
 
 
-
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
 
     @Override
     public void onBackPressed() {
@@ -271,4 +301,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .putExtra("riderPhone", getIntent().getExtras().getString("riderPhone", null)));
         finish();
     }
+
+
+/**
+ * This is the implementation Haversine Distance Algorithm between two places
+ R = earth’s radius (mean radius = 6,371km)
+Δlat = lat2− lat1
+Δlong = long2− long1
+a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
+c = 2.atan2(√a, √(1−a))
+d = R.c
+ */
+
+    int showDistance(LatLng from,LatLng to){
+
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = from.latitude;
+        double lat2 = to.latitude;
+        double lon1 = from.longitude;
+        double lon2 = to.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return (int) (Radius * c);
+    }
+    int showFare(int distance){
+
+        int baseFare = 40;
+        int fareRate = 10;
+
+        int fare = distance*fareRate;
+        if(fare<baseFare)return  baseFare;
+        else return  fare;
+    }
+
 }
