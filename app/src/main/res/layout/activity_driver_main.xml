@@ -70,7 +70,7 @@
             android:text="Mobile:" />
 
         <TextView
-            android:id="@+id/tv_dirver_mobile"
+            android:id="@+id/tv_driver_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="mobile" />

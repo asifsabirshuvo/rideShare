@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/distance"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -17,6 +17,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value=" AIzaSyCpIiIf49-3bkw3dV-3hTjHI6ePFNHLELE" />
+
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity android:name=".LoginScreenActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
@@ -32,6 +38,9 @@
         <activity android:name=".RiderRegistrationActivity"/>
         <activity android:name=".ShowDriversMap"/>
         <activity android:name=".MapsActivity"/>
+        <activity android:name=".ShowDriverRequest"/>
+        <activity android:name=".ShowRiderRequest"/>
+
     </application>
 
 </manifest>

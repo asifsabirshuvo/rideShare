@@ -1,6 +1,7 @@
 package com.example.asifsabir.rideshareapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RatingBar;
@@ -12,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * Created by asifsabir on 1/21/18.
@@ -25,10 +27,11 @@ public class DriverMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
+        FirebaseMessaging.getInstance().subscribeToTopic("driver");
 
         tvFullName = (TextView) findViewById(R.id.tv_driver_name);
         tvEmail = (TextView) findViewById(R.id.tv_driver_email);
-        tvMobile = (TextView) findViewById(R.id.tv_dirver_mobile);
+        tvMobile = (TextView) findViewById(R.id.tv_driver_mobile);
         tvAge = (TextView) findViewById(R.id.tv_driver_age);
         tvNid = (TextView) findViewById(R.id.tv_driver_nid);
         tvRegistraion = (TextView) findViewById(R.id.tv_driver_registration);
@@ -37,7 +40,12 @@ public class DriverMainActivity extends AppCompatActivity {
 //retrieving phone data
         String driverPhone = getIntent().getExtras().getString("driverPhone", null);
 
+        //saving driver data
+        SharedPreferences.Editor editor = getSharedPreferences("driverData", MODE_PRIVATE).edit();
+        editor.putInt("driverPhone",Integer.parseInt(driverPhone));
+        editor.apply();
 //rendering  driver data
+
 
         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Driver").child(driverPhone);
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {

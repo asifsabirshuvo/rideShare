@@ -47,6 +47,9 @@ public class LoginScreenActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.et_password_login);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
 
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("driver");
+
+
         if (Build.VERSION.SDK_INT >= 23) {
             permissionCheck();
         }

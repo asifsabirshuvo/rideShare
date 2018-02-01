@@ -11,14 +11,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +25,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,15 +51,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_REQUEST = 500;
     ArrayList<LatLng> listPoints;
     Button btnReqRides;
-    TextView  tvFare,tvDistance;
-
+    TextView tvFare, tvDistance;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    String riderName,riderNid,riderRating,riderPhone;
+int fare,distance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         btnReqRides = (Button) findViewById(R.id.button_req_riders);
-        tvDistance= (TextView)findViewById(R.id.tv_distance);
-        tvFare= (TextView)findViewById(R.id.tv_fare);
+        tvDistance = (TextView) findViewById(R.id.tv_distance);
+        tvFare = (TextView) findViewById(R.id.tv_fare);
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -69,10 +72,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         listPoints = new ArrayList<>();
 
 
+
+
+            riderPhone = getIntent().getExtras().getString("riderPhone", null);
+
+        //rendering  driver data
+
+        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Rider").child(riderPhone);
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                RiderReg riderReg = snapshot.getValue(RiderReg.class);
+                riderName = riderReg.fullName;
+                riderNid = riderReg.nid;
+                riderRating = riderReg.rating;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MapsActivity.this, "Error happened in fetching rider data!", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+
+
         btnReqRides.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "clicked !", Toast.LENGTH_SHORT).show();
+
+
+                DatabaseReference reqRef = database.getReference("rideRequest").push();
+                String reqKey = reqRef.getKey();
+
+                RideRequest rideRequest = new RideRequest(riderName,riderPhone,riderNid,riderRating,
+                        "","","","",
+                        String.valueOf(distance),String.valueOf(fare),"0",reqKey);
+                reqRef.setValue(rideRequest);
+
+                Intent i = new Intent(MapsActivity.this, ShowRiderRequest.class);
+                i.putExtra("reqKey", reqKey);
+                startActivity(i);
+                finish();
+
             }
         });
 
@@ -127,11 +171,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     btnReqRides.setVisibility(View.VISIBLE);
 
                     //show distance
-                    int dist=   showDistance(listPoints.get(0), listPoints.get(1));
-                    tvDistance.setText(dist+" KM");
+                    distance = showDistance(listPoints.get(0), listPoints.get(1));
+                    tvDistance.setText(distance + " KM");
                     //show bill
-                    int fare = showFare(dist);
-                    tvFare.setText(fare+" tk");
+                    fare = showFare(distance);
+                    tvFare.setText(fare + " tk");
                 }
                 mMap.addMarker(markerOptions);
 
@@ -151,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String str_org = "origin=" + origin.latitude + "," + origin.longitude;
         //Value of destination
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        Toast.makeText(this, str_org + "\n" + str_dest, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, str_org + "\n" + str_dest, Toast.LENGTH_SHORT).show();
         //Set value enable the sensor
         String sensor = "sensor=false";
         //Mode for find direction
@@ -303,17 +347,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-/**
- * This is the implementation Haversine Distance Algorithm between two places
- R = earth’s radius (mean radius = 6,371km)
-Δlat = lat2− lat1
-Δlong = long2− long1
-a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
-c = 2.atan2(√a, √(1−a))
-d = R.c
- */
+    /**
+     * This is the implementation Haversine Distance Algorithm between two places
+     * R = earth’s radius (mean radius = 6,371km)
+     * Δlat = lat2− lat1
+     * Δlong = long2− long1
+     * a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
+     * c = 2.atan2(√a, √(1−a))
+     * d = R.c
+     */
 
-    int showDistance(LatLng from,LatLng to){
+    int showDistance(LatLng from, LatLng to) {
 
         int Radius = 6371;// radius of earth in Km
         double lat1 = from.latitude;
@@ -339,14 +383,15 @@ d = R.c
 
         return (int) (Radius * c);
     }
-    int showFare(int distance){
+
+    int showFare(int distance) {
 
         int baseFare = 40;
         int fareRate = 10;
 
-        int fare = distance*fareRate;
-        if(fare<baseFare)return  baseFare;
-        else return  fare;
+        int fare = distance * fareRate;
+        if (fare < baseFare) return baseFare;
+        else return fare;
     }
 
 }

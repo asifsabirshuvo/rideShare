@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/tv_my_rider_status"
+        android:text="Ride Requested. waiting..."
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="25dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ride distance: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="distance"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estimated Fare: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_fare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fare"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorAccent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rider Name:"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="rider"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rider phone: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="phone "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rider nid: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_nid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="nid "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rider rating: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="rating"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/5"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:visibility="gone"
+        android:id="@+id/driver_layout"
+        android:background="@color/colorAccent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver Name: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_driver_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver phone:  "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_driver_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="phone "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver Nid: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_driver_nid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="nid "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver Rating: "
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_my_driver_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="rating"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/5"
+                android:textColor="@android:color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
