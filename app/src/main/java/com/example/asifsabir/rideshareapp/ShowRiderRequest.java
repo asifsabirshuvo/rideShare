@@ -1,10 +1,13 @@
 package com.example.asifsabir.rideshareapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +26,16 @@ public class ShowRiderRequest extends AppCompatActivity {
             tvDriverName,tvDriverPhone,tvDriverNid,tvDriverRating,
             tvDistance,tvFare,tvRideStatus;
     LinearLayout driverLayout;
+    Button btnRateDriver;
+    RatingBar rateDriver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_show_request);
         getSupportActionBar().setTitle("My Ride Request");
+
+        rateDriver = (RatingBar)findViewById(R.id.rt_bar_to_driver);
+        btnRateDriver =(Button)findViewById(R.id.btn_rate_driver);
 
         driverLayout = (LinearLayout)findViewById(R.id.driver_layout);
         tvRiderName = (TextView)findViewById(R.id.tv_my_name);
@@ -111,7 +119,8 @@ public class ShowRiderRequest extends AppCompatActivity {
                 if(status==2){
                     tvRideStatus.setText("Ride Ended!");
                     tvRideStatus.setTextColor(Color.GREEN);
-
+                    btnRateDriver.setVisibility(View.VISIBLE);
+                    rateDriver.setVisibility(View.VISIBLE);
                     //enable rating layout;
                     Toast.makeText(ShowRiderRequest.this, "Please rate the driver", Toast.LENGTH_SHORT).show();
                 }
@@ -126,5 +135,39 @@ public class ShowRiderRequest extends AppCompatActivity {
             }
         });
 
+        btnRateDriver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final float value = (rateDriver.getRating()+Float.parseFloat(tvDriverRating.getText().toString()))/2;
+
+                //updating rating
+                final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Driver")
+                        .child(tvDriverPhone.getText().toString()).child("rating");
+                rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+//                        String count = snapshot.getValue(String.class);
+//                        float countNum = Float.parseFloat(count);
+                        rootRef.setValue(String.valueOf(value));
+                        Toast.makeText(ShowRiderRequest.this, "Driver rated! \nThanks", Toast.LENGTH_LONG).show();
+                        //sending data to rider activity
+
+                         //sending data to rider activity
+
+                        Intent i = new Intent(ShowRiderRequest.this, RiderMainAcitivity.class);
+                        i.putExtra("riderName", tvRiderName.getText().toString());
+                        i.putExtra("riderPhone", tvRiderPhone.getText().toString());
+                        startActivity(i);
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(ShowRiderRequest.this, "Error rating driver!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }

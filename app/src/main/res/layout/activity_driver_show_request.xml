@@ -325,5 +325,29 @@
             android:visibility="gone"
             android:text="End Ride" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
+       <RatingBar
+           android:layout_width="wrap_content"
+           android:id="@+id/rt_bar_to_rider"
+           android:clickable="true"
+           android:backgroundTint="@android:color/holo_orange_dark"
+           android:focusable="true"
+           android:visibility="gone"
+           android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_rate_rider"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            android:text="Rate rider" />
+    </LinearLayout>
 </LinearLayout>

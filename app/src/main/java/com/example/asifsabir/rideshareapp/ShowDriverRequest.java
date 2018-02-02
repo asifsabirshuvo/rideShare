@@ -1,13 +1,16 @@
 package com.example.asifsabir.rideshareapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.FloatRange;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +29,11 @@ public class ShowDriverRequest extends AppCompatActivity {
     TextView tvRiderName, tvRiderPhone, tvRiderNid, tvRiderRating,
             tvDriverName, tvDriverPhone, tvDriverNid, tvDriverRating,
             tvDistance, tvFare, tvRideStatus;
-    LinearLayout rateLayout;
     String riderName, riderPhone, riderRating, riderNid;
     String driverName, driverPhone, driverRating, driverNid;
     String fare, distance, status;
-    Button btnStartRide, btnEndRide, btnCancelRide;
+    Button btnStartRide, btnEndRide, btnCancelRide,btnRateRider;
+    RatingBar rateRider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,10 +58,14 @@ public class ShowDriverRequest extends AppCompatActivity {
         btnStartRide = (Button) findViewById(R.id.btn_start_ride);
         btnEndRide = (Button) findViewById(R.id.btn_end_ride);
         btnCancelRide = (Button) findViewById(R.id.btn_cancel_ride);
+        btnRateRider = (Button)findViewById(R.id.btn_rate_rider);
+
+        rateRider = (RatingBar) findViewById(R.id.rt_bar_to_rider);
+
 
 
         SharedPreferences prefs = getSharedPreferences("driverData", MODE_PRIVATE);
-        int driverPhoneSaved = prefs.getInt("driverPhone", 0);
+        final int driverPhoneSaved = prefs.getInt("driverPhone", 0);
 
         final String reqKey = getIntent().getExtras().getString("reqKey", null);
 
@@ -72,8 +79,8 @@ public class ShowDriverRequest extends AppCompatActivity {
 
                 DriverReg driverReg = snapshot.getValue(DriverReg.class);
                 driverName = driverReg.fullName;
-                driverPhone = driverReg.nid;
-                driverNid = driverReg.rating;
+                driverPhone = driverReg.mobile;
+                driverNid = driverReg.nid;
                 driverRating = driverReg.rating;
 
                 //setting on TextView
@@ -165,7 +172,12 @@ public class ShowDriverRequest extends AppCompatActivity {
 
                         tvRideStatus.setText("Ride Ended");
                         tvRideStatus.setTextColor(Color.GREEN);
+                        btnEndRide.setVisibility(View.GONE);
+
+                        btnRateRider.setVisibility(View.VISIBLE);
+                        rateRider.setVisibility(View.VISIBLE);
                         Toast.makeText(ShowDriverRequest.this, "Please rate the rider!", Toast.LENGTH_SHORT).show();
+
                         //enable rating button stuff
                     }
 
@@ -181,6 +193,38 @@ public class ShowDriverRequest extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ShowDriverRequest.this, "Ride Cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnRateRider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final float value = (rateRider.getRating()+Float.parseFloat(riderRating))/2;
+
+                //updating rating
+                final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Rider").child(riderPhone).child("rating");
+                rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        String count = snapshot.getValue(String.class);
+                        float countNum = Float.parseFloat(count);
+                        countNum=(value+countNum)/2;
+                        rootRef.setValue(String.valueOf(countNum));
+                        Toast.makeText(ShowDriverRequest.this, "Rider rated! \nThanks", Toast.LENGTH_LONG).show();
+                        //sending data to rider activity
+
+                        Intent i = new Intent(ShowDriverRequest.this, DriverMainActivity.class);
+                        i.putExtra("driverPhone", driverPhone);
+                        startActivity(i);
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(ShowDriverRequest.this, "Error rating rider!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 
