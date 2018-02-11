@@ -53,8 +53,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button btnReqRides;
     TextView tvFare, tvDistance;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    String riderName,riderNid,riderRating,riderPhone;
-int fare,distance;
+    String riderName, riderNid, riderRating, riderPhone;
+    int fare, distance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +73,7 @@ int fare,distance;
         listPoints = new ArrayList<>();
 
 
-
-
-            riderPhone = getIntent().getExtras().getString("riderPhone", null);
+        riderPhone = getIntent().getExtras().getString("riderPhone", null);
 
         //rendering  driver data
 
@@ -98,7 +97,6 @@ int fare,distance;
         });
 
 
-
         btnReqRides.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +105,9 @@ int fare,distance;
                 DatabaseReference reqRef = database.getReference("rideRequest").push();
                 String reqKey = reqRef.getKey();
 
-                RideRequest rideRequest = new RideRequest(riderName,riderPhone,riderNid,riderRating,
-                        "","","","",
-                        String.valueOf(distance),String.valueOf(fare),"0",reqKey);
+                RideRequest rideRequest = new RideRequest(riderName, riderPhone, riderNid, riderRating,
+                        "", "", "", "",
+                        String.valueOf(distance), String.valueOf(fare), "0", reqKey);
                 reqRef.setValue(rideRequest);
 
                 Intent i = new Intent(MapsActivity.this, ShowRiderRequest.class);
@@ -174,8 +172,10 @@ int fare,distance;
                     distance = showDistance(listPoints.get(0), listPoints.get(1));
                     tvDistance.setText(distance + " KM");
                     //show bill
-                    fare = showFare(distance);
-                    tvFare.setText(fare + " tk");
+                    fare = showBikeFare(distance);
+                    int carFare =showCarFare(distance);
+
+                    tvFare.setText("Bike:"+fare + " tk\n"+"Car:"+carFare + " tk");
                 }
                 mMap.addMarker(markerOptions);
 
@@ -384,9 +384,9 @@ int fare,distance;
         return (int) (Radius * c);
     }
 
-    int showFare(int distance) {
+    int showBikeFare(int distance) {
 
-        int baseFare = 40;
+        int baseFare = 20;
         int fareRate = 10;
 
         int fare = distance * fareRate;
@@ -394,4 +394,13 @@ int fare,distance;
         else return fare;
     }
 
+    int showCarFare(int distance) {
+
+        int baseFare = 100;
+        int fareRate = 100;
+
+        int fare = distance * fareRate;
+        if (fare < baseFare) return baseFare;
+        else return fare;
+    }
 }
