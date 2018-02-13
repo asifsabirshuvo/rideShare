@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    public int flag = 0;
     private GoogleMap mMap;
     private static final int LOCATION_REQUEST = 500;
     ArrayList<LatLng> listPoints;
@@ -159,6 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_start))
                             .title("starting position");
                     Toast.makeText(MapsActivity.this, "Select Ending point", Toast.LENGTH_SHORT).show();
+                    flag = 0;
 
                 } else {
                     //Add second marker to the map
@@ -173,9 +174,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     tvDistance.setText(distance + " KM");
                     //show bill
                     fare = showBikeFare(distance);
-                    int carFare =showCarFare(distance);
+                    int carFare = showCarFare(distance);
 
-                    tvFare.setText("Bike:"+fare + " tk\n"+"Car:"+carFare + " tk");
+                    tvFare.setText("Bike:" + fare + " tk\n" + "Car:" + carFare + " tk");
                 }
                 mMap.addMarker(markerOptions);
 
@@ -184,6 +185,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
                     taskRequestDirections.execute(url);
+
+                    //making second marker
+
+                    double midLat = (listPoints.get(0).latitude + listPoints.get(1).latitude) / 1.999701646;
+                    double midLon = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 1.999921833;
+
+
+                    String url1 = getRequestUrl(listPoints.get(0), new LatLng(midLat, midLon));
+                    TaskRequestDirections taskRequestDirections1 = new TaskRequestDirections();
+                    taskRequestDirections1.execute(url1);
+                    //making third marker//nope 2nd is half
+
+                    String url2 = getRequestUrl(new LatLng(midLat, midLon), listPoints.get(1));
+                    TaskRequestDirections taskRequestDirections2 = new TaskRequestDirections();
+                    taskRequestDirections2.execute(url2);
+
+
+                    //making third marker
+
+                    double midLat2 = (listPoints.get(0).latitude + listPoints.get(1).latitude) / 1.999828888;
+                    double midLon2 = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 2.000169271;
+
+
+                    String url3 = getRequestUrl(listPoints.get(0), new LatLng(midLat2, midLon2));
+                    TaskRequestDirections taskRequestDirections3 = new TaskRequestDirections();
+                    taskRequestDirections3.execute(url3);
+                    //making third marker//nope 2nd is half
+
+                    String url4 = getRequestUrl(new LatLng(midLat2, midLon2), listPoints.get(1));
+                    TaskRequestDirections taskRequestDirections4 = new TaskRequestDirections();
+                    taskRequestDirections4.execute(url4);
                 }
             }
         });
@@ -208,6 +240,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + param;
         return url;
     }
+
+    private String getMapsApiDirectionsUrl1(LatLng origin, LatLng dest) {
+
+        String waypoints = "waypoints=optimize:true|"
+                + origin.latitude + "," + origin.longitude
+                + "|" + "|" + origin.latitude + ","
+                + dest.longitude + "|" + dest.latitude + ","
+                + dest.longitude;
+
+        String sensor = "sensor=false";
+        String params = waypoints + "&" + sensor;
+        String output = "json";
+        String url1 = "https://maps.googleapis.com/maps/api/directions/"
+                + output + "?" + params;
+        Log.d("url", url1);
+        return url1;
+    }
+
+    private String getMapsApiDirectionsUrl2(LatLng origin, LatLng dest) {
+        String waypoints = "waypoints=optimize:true|"
+                + origin.latitude + "," + origin.longitude
+                + "|" + "|" + dest.latitude + ","
+                + origin.longitude + "|" + dest.latitude + ","
+                + dest.longitude;
+        ;
+
+        String sensor = "sensor=false";
+        String params = waypoints + "&" + sensor;
+        String output = "json";
+        String url2 = "https://maps.googleapis.com/maps/api/directions/"
+                + output + "?" + params;
+        Log.d("url", url2);
+        return url2;
+    }
+
 
     private String requestDirection(String reqUrl) throws IOException {
         String responseString = "";
@@ -315,13 +382,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 polylineOptions.addAll(points);
-                polylineOptions.width(5);
-                polylineOptions.color(Color.RED);
+                polylineOptions.width(7);
+                if (flag == 1) {
+                    polylineOptions.color(Color.RED);
+                    polylineOptions.width(2);
+                } else if (flag == 2) {
+                    polylineOptions.color(Color.RED);
+                    polylineOptions.width(2);
+                } else if (flag == 3) {
+                    polylineOptions.color(Color.RED);
+                    polylineOptions.width(2);
+                } else if (flag == 4) {
+                    polylineOptions.color(Color.RED);
+                    polylineOptions.width(2);
+                } else if (flag == 5) {
+                    polylineOptions.color(Color.RED);
+                    polylineOptions.width(2);
+                } else {
+                    polylineOptions.color(Color.GREEN);
+                    polylineOptions.width(7);
+                }
+                flag++;
+
                 polylineOptions.geodesic(true);
+
             }
 
             if (polylineOptions != null) {
                 mMap.addPolyline(polylineOptions);
+
+                //req second marker
+                //making second marker
+//
+//                String url1 = getMapsApiDirectionsUrl1(listPoints.get(0), listPoints.get(1));
+//                TaskRequestDirections taskRequestDirections1 = new TaskRequestDirections();
+//                taskRequestDirections1.execute(url1);
+
             } else {
                 Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
                 tvDistance.setText("Error");

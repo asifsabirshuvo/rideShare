@@ -324,7 +324,7 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <EditText
                 android:layout_width="match_parent"
@@ -350,7 +350,20 @@
                 android:gravity="center"
                 android:hint="Bkash trxID"
                 android:textColor="@android:color/holo_blue_dark" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="OR pay using your CARDs "
+                android:textColor="@android:color/holo_blue_dark" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:drawableLeft="@drawable/card"
+                android:gravity="center"
+                android:hint="Card no , CVC"
+                android:textColor="@android:color/holo_blue_dark" />
             <Button
                 android:id="@+id/button_pay"
                 android:layout_width="wrap_content"
