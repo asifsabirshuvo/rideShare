@@ -396,8 +396,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     int showCarFare(int distance) {
 
-        int baseFare = 100;
-        int fareRate = 100;
+        int baseFare = 60;
+        int fareRate = 70;
 
         int fare = distance * fareRate;
         if (fare < baseFare) return baseFare;
