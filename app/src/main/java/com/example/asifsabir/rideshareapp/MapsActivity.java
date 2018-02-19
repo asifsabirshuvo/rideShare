@@ -51,10 +51,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_REQUEST = 500;
     ArrayList<LatLng> listPoints;
     Button btnReqRides;
-    TextView tvFare, tvDistance;
+    TextView tvFare, tvDistance,tvNotDistance;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     String riderName, riderNid, riderRating, riderPhone;
-    int fare, distance;
+    int fare;
+    double distance;
+    public static DecimalFormat df1 = new DecimalFormat(".##");
+    public static DecimalFormat df2 = new DecimalFormat(".##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnReqRides = (Button) findViewById(R.id.button_req_riders);
         tvDistance = (TextView) findViewById(R.id.tv_distance);
         tvFare = (TextView) findViewById(R.id.tv_fare);
-
+        tvNotDistance = (TextView)findViewById(R.id.tv_not_distance);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -171,10 +174,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     //show distance
                     distance = showDistance(listPoints.get(0), listPoints.get(1));
-                    tvDistance.setText(distance + " KM");
+                    tvDistance.setText(String.format( "%.2f", distance ) + " KM");
                     //show bill
-                    fare = showBikeFare(distance);
-                    int carFare = showCarFare(distance);
+                    fare = showBikeFare((int) distance);
+                    int carFare = showCarFare((int) distance);
 
                     tvFare.setText("Bike:" + fare + " tk\n" + "Car:" + carFare + " tk");
                 }
@@ -216,6 +219,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String url4 = getRequestUrl(new LatLng(midLat2, midLon2), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections4 = new TaskRequestDirections();
                     taskRequestDirections4.execute(url4);
+
+                    //rendering not taken ppaths
+
+                    double notDist1 = showDistance(listPoints.get(0),new LatLng(midLat,midLon))
+                            +showDistance(new LatLng(midLat,midLon),listPoints.get(1))+1;
+
+                    double notDist2 = showDistance(listPoints.get(0),new LatLng(midLat2,midLon2))
+                            +showDistance(new LatLng(midLat,midLon),listPoints.get(1))+1;
+
+                    tvNotDistance.setText(String.format( "%.2f", notDist1 )+"KM\n"+String.format( "%.2f", notDist2 )+"KM");
                 }
             }
         });
@@ -453,7 +466,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * d = R.c
      */
 
-    int showDistance(LatLng from, LatLng to) {
+    double showDistance(LatLng from, LatLng to) {
 
         int Radius = 6371;// radius of earth in Km
         double lat1 = from.latitude;
@@ -477,7 +490,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
                 + " Meter   " + meterInDec);
 
-        return (int) (Radius * c);
+        return (Radius * c);
     }
 
     int showBikeFare(int distance) {
