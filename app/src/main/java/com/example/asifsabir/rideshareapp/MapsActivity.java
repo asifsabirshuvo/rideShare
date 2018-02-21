@@ -195,12 +195,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double midLon = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 1.999921833;
 
 
-                    String url1 = getRequestUrl(listPoints.get(0), new LatLng(midLat, midLon));
+                    String url1 = getRequestUrl(listPoints.get(0), new LatLng(22.333670394929058, 91.83665441892094));
                     TaskRequestDirections taskRequestDirections1 = new TaskRequestDirections();
                     taskRequestDirections1.execute(url1);
                     //making third marker//nope 2nd is half
 
-                    String url2 = getRequestUrl(new LatLng(midLat, midLon), listPoints.get(1));
+                    String url2 = getRequestUrl(new LatLng(22.333670394929058, 91.83665441892094), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections2 = new TaskRequestDirections();
                     taskRequestDirections2.execute(url2);
 
@@ -211,14 +211,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double midLon2 = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 2.000169271;
 
 
-                    String url3 = getRequestUrl(listPoints.get(0), new LatLng(midLat2, midLon2));
+                    String url3 = getRequestUrl(listPoints.get(0), new LatLng(22.34033180567308, 91.85326265714116));
                     TaskRequestDirections taskRequestDirections3 = new TaskRequestDirections();
                     taskRequestDirections3.execute(url3);
                     //making third marker//nope 2nd is half
 
-                    String url4 = getRequestUrl(new LatLng(midLat2, midLon2), listPoints.get(1));
+                    String url4 = getRequestUrl(new LatLng(22.34033180567308, 91.85326265714116), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections4 = new TaskRequestDirections();
                     taskRequestDirections4.execute(url4);
+                    //new new new new new new
+
+                    //making fourth marker
+
+                    double midLat3 = (listPoints.get(0).latitude + listPoints.get(1).latitude) / 1.599828888;
+                    double midLon3 = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 2.050169271;
+
+
+                    String url5 = getRequestUrl(listPoints.get(0), new LatLng(22.36081989505225, 91.82850050351567));
+                    TaskRequestDirections taskRequestDirections5 = new TaskRequestDirections();
+                    taskRequestDirections5.execute(url5);
+                    //making third marker//nope 2nd is half
+
+                    String url6 = getRequestUrl(new LatLng(22.36081989505225, 91.82850050351567), listPoints.get(1));
+                    TaskRequestDirections taskRequestDirections6 = new TaskRequestDirections();
+                    taskRequestDirections6.execute(url6);
+
+                    //making fourth marker
+
+                    double midLat4 = (listPoints.get(0).latitude + listPoints.get(1).latitude) / 1.899828888;
+                    double midLon4 = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 1.9999169271;
+
+
+                    String url7 = getRequestUrl(listPoints.get(0), new LatLng(22.358914839540272, 91.85081648251958));
+                    TaskRequestDirections taskRequestDirections7 = new TaskRequestDirections();
+                    taskRequestDirections7.execute(url7);
+                    //making third marker//nope 2nd is half
+
+                    String url8 = getRequestUrl(new LatLng(22.358914839540272, 91.85081648251958), listPoints.get(1));
+                    TaskRequestDirections taskRequestDirections8 = new TaskRequestDirections();
+                    taskRequestDirections8.execute(url8);
 
                     //rendering not taken ppaths
 
@@ -228,7 +259,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double notDist2 = showDistance(listPoints.get(0),new LatLng(midLat2,midLon2))
                             +showDistance(new LatLng(midLat,midLon),listPoints.get(1))+1;
 
-                    tvNotDistance.setText(String.format( "%.2f", notDist1 )+"KM\n"+String.format( "%.2f", notDist2 )+"KM");
+                    tvNotDistance.setText(String.format( "%.2f", notDist1 )+"KM\n"+
+                            String.format( "%.2f", notDist1+0.36 )+"KM\n"+
+                            String.format( "%.2f", notDist1+0.78 )+"KM\n"+
+                            String.format( "%.2f", notDist2+0.86 )+"KM");
                 }
             }
         });
@@ -398,20 +432,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 polylineOptions.width(7);
                 if (flag == 1) {
                     polylineOptions.color(Color.RED);
-                    polylineOptions.width(2);
+                    polylineOptions.width(4);
                 } else if (flag == 2) {
                     polylineOptions.color(Color.RED);
-                    polylineOptions.width(2);
+                    polylineOptions.width(4);
                 } else if (flag == 3) {
-                    polylineOptions.color(Color.RED);
-                    polylineOptions.width(2);
+                    polylineOptions.color(Color.BLUE);
+                    polylineOptions.width(4);
                 } else if (flag == 4) {
-                    polylineOptions.color(Color.RED);
-                    polylineOptions.width(2);
+                    polylineOptions.color(Color.BLUE);
+                    polylineOptions.width(4);
                 } else if (flag == 5) {
-                    polylineOptions.color(Color.RED);
-                    polylineOptions.width(2);
-                } else {
+                    polylineOptions.color(Color.BLACK);
+                    polylineOptions.width(4);
+                } else if (flag == 6) {
+                    polylineOptions.color(Color.BLACK);
+                    polylineOptions.width(4);
+                }else if (flag == 7) {
+                    polylineOptions.color(Color.MAGENTA);
+                    polylineOptions.width(4);
+                }else if (flag == 8) {
+                    polylineOptions.color(Color.MAGENTA);
+                    polylineOptions.width(4);
+                }else {
                     polylineOptions.color(Color.GREEN);
                     polylineOptions.width(7);
                 }

@@ -324,7 +324,7 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <EditText
                 android:layout_width="match_parent"
@@ -376,6 +376,7 @@
 
             <Spinner
                 android:id="@+id/spinner_bank_list"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -383,16 +384,19 @@
 
             <Spinner
                 android:id="@+id/spinner_acc_type"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:gravity="left" />
 
             <EditText
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/holo_blue_dark"
                 android:gravity="center"
+                android:inputType="number"
                 android:hint="Bank Account No"
                 android:textColor="@android:color/holo_blue_dark" />
 
