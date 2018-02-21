@@ -87,8 +87,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:textColor="@android:color/white"
-                    android:text="Tk." />
+                    android:text="Tk."
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
 
@@ -324,7 +324,7 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <EditText
                 android:layout_width="match_parent"
@@ -350,12 +350,14 @@
                 android:gravity="center"
                 android:hint="Bkash trxID"
                 android:textColor="@android:color/holo_blue_dark" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="OR pay using your CARDs "
                 android:textColor="@android:color/holo_blue_dark" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -364,9 +366,39 @@
                 android:gravity="center"
                 android:hint="Card no , CVC"
                 android:textColor="@android:color/holo_blue_dark" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="OR try Local Banks "
+                android:textColor="@android:color/holo_blue_dark" />
+
+            <Spinner
+                android:id="@+id/spinner_bank_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left" />
+
+            <Spinner
+                android:id="@+id/spinner_acc_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:gravity="center"
+                android:hint="Bank Account No"
+                android:textColor="@android:color/holo_blue_dark" />
+
             <Button
                 android:id="@+id/button_pay"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/holo_blue_bright"
                 android:gravity="center"

@@ -8,9 +8,11 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,23 @@ public class ShowRiderRequest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_show_request);
         getSupportActionBar().setTitle("My Ride Request");
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_bank_list);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.bank_names_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        Spinner spinnerAccType = (Spinner) findViewById(R.id.spinner_acc_type);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.acc_type_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinnerAccType.setAdapter(adapter2);
 
         tvWaitingTime = (TextView) findViewById(R.id.tv_waiting);
         payLayout = (LinearLayout) findViewById(R.id.pay_layout);
@@ -88,7 +107,7 @@ public class ShowRiderRequest extends AppCompatActivity {
                 tvDriverRating.setText(rideRequest.driverRating);
 
                 tvDistance.setText(rideRequest.distance + " Km");
-                tvFare.setText(rideRequest.fare );
+                tvFare.setText(rideRequest.fare);
 
             }
 
@@ -139,10 +158,10 @@ public class ShowRiderRequest extends AppCompatActivity {
                     //removing waiting handler
                     ha.removeCallbacksAndMessages(null);
                     //updating payment
-                    int fare1= (int) (Integer.parseInt(tvFare.getText().toString())+time*5/60/1000); //tk 5 per min
-                    tvWaitingTime.setText("final billing:"+fare1+"tk");
+                    int fare1 = (int) (Integer.parseInt(tvFare.getText().toString()) + time * 5 / 60 / 1000); //tk 5 per min
+                    tvWaitingTime.setText("final billing:" + fare1 + "tk");
                     Toast.makeText(ShowRiderRequest.this, "Bill adjusted", Toast.LENGTH_LONG).show();
-                    tvFare.setText(fare1 +"(final)");
+                    tvFare.setText(fare1 + "(final)");
 
                     payLayout.setVisibility(View.VISIBLE);
                     Toast.makeText(ShowRiderRequest.this, "Please pay!", Toast.LENGTH_SHORT).show();
@@ -220,15 +239,15 @@ public class ShowRiderRequest extends AppCompatActivity {
                 } else {
                     // check if GPS enabled
                     if (gps.canGetLocation() && gps.getLatitude() != 0) {
-                        Log.e("log","entered");
+                        Log.e("log", "entered");
                         latOfSensor = gps.getLatitude();
                         Log.e("log", String.valueOf(latOfSensor));
                         if (latOfSensor == lastSensor) {
-                            Log.e("log","entered2");
+                            Log.e("log", "entered2");
 
                             Toast.makeText(ShowRiderRequest.this, "Waiting", Toast.LENGTH_SHORT).show();
                             time = time + 5000;
-                            tvWaitingTime.setText("waiting: " + String.format("%.2f", time/1000/60) + " minutes");
+                            tvWaitingTime.setText("waiting: " + String.format("%.2f", time / 1000 / 60) + " minutes");
                         }
                         lastSensor = latOfSensor;
                     } else {
@@ -237,7 +256,7 @@ public class ShowRiderRequest extends AppCompatActivity {
                         // Ask user to enable GPS/network in settings
                         gps.showSettingsAlert();
                     }
-                        ha.postDelayed(this, 5000);
+                    ha.postDelayed(this, 5000);
                 }
             }
 
