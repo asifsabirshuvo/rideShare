@@ -46,9 +46,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final int LOCATION_REQUEST = 500;
     public int flag = 0;
     private GoogleMap mMap;
-    private static final int LOCATION_REQUEST = 500;
     ArrayList<LatLng> listPoints;
     Button btnReqRides;
     TextView tvFare, tvDistance,tvNotDistance;
@@ -110,7 +110,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 RideRequest rideRequest = new RideRequest(riderName, riderPhone, riderNid, riderRating,
                         "", "", "", "",
-                        String.valueOf(distance), String.valueOf(fare), "0", reqKey);
+                        String.valueOf(distance), String.valueOf(fare), "0", reqKey,
+                        String.valueOf(listPoints.get(0).latitude),String.valueOf(listPoints.get(0).longitude),
+                        String.valueOf(listPoints.get(1).latitude),String.valueOf(listPoints.get(1).longitude));
                 reqRef.setValue(rideRequest);
 
                 Intent i = new Intent(MapsActivity.this, ShowRiderRequest.class);
@@ -195,12 +197,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double midLon = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 1.999921833;
 
 
-                    String url1 = getRequestUrl(listPoints.get(0), new LatLng(22.333670394929058, 91.83665441892094));
+                    String url1 = getRequestUrl(listPoints.get(0), new LatLng(22.35117286764485,91.83652859647827));
                     TaskRequestDirections taskRequestDirections1 = new TaskRequestDirections();
                     taskRequestDirections1.execute(url1);
                     //making third marker//nope 2nd is half
 
-                    String url2 = getRequestUrl(new LatLng(22.333670394929058, 91.83665441892094), listPoints.get(1));
+                    String url2 = getRequestUrl(new LatLng(22.35117286764485,91.83652859647827), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections2 = new TaskRequestDirections();
                     taskRequestDirections2.execute(url2);
 
@@ -211,12 +213,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double midLon2 = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 2.000169271;
 
 
-                    String url3 = getRequestUrl(listPoints.get(0), new LatLng(22.34033180567308, 91.85326265714116));
+                    String url3 = getRequestUrl(listPoints.get(0), new LatLng(22.343812739826628,91.8320489310745));
                     TaskRequestDirections taskRequestDirections3 = new TaskRequestDirections();
                     taskRequestDirections3.execute(url3);
                     //making third marker//nope 2nd is half
 
-                    String url4 = getRequestUrl(new LatLng(22.34033180567308, 91.85326265714116), listPoints.get(1));
+                    String url4 = getRequestUrl(new LatLng(22.343812739826628,91.8320489310745), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections4 = new TaskRequestDirections();
                     taskRequestDirections4.execute(url4);
                     //new new new new new new
@@ -242,12 +244,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double midLon4 = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 1.9999169271;
 
 
-                    String url7 = getRequestUrl(listPoints.get(0), new LatLng(22.358914839540272, 91.85081648251958));
+                    String url7 = getRequestUrl(listPoints.get(0), new LatLng(22.357517670866102,91.83795693505704));
                     TaskRequestDirections taskRequestDirections7 = new TaskRequestDirections();
                     taskRequestDirections7.execute(url7);
                     //making third marker//nope 2nd is half
 
-                    String url8 = getRequestUrl(new LatLng(22.358914839540272, 91.85081648251958), listPoints.get(1));
+                    String url8 = getRequestUrl(new LatLng(22.357517670866102,91.83795693505704), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections8 = new TaskRequestDirections();
                     taskRequestDirections8.execute(url8);
 
@@ -288,39 +290,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return url;
     }
 
-    private String getMapsApiDirectionsUrl1(LatLng origin, LatLng dest) {
-
-        String waypoints = "waypoints=optimize:true|"
-                + origin.latitude + "," + origin.longitude
-                + "|" + "|" + origin.latitude + ","
-                + dest.longitude + "|" + dest.latitude + ","
-                + dest.longitude;
-
-        String sensor = "sensor=false";
-        String params = waypoints + "&" + sensor;
-        String output = "json";
-        String url1 = "https://maps.googleapis.com/maps/api/directions/"
-                + output + "?" + params;
-        Log.d("url", url1);
-        return url1;
-    }
-
-    private String getMapsApiDirectionsUrl2(LatLng origin, LatLng dest) {
-        String waypoints = "waypoints=optimize:true|"
-                + origin.latitude + "," + origin.longitude
-                + "|" + "|" + dest.latitude + ","
-                + origin.longitude + "|" + dest.latitude + ","
-                + dest.longitude;
-        ;
-
-        String sensor = "sensor=false";
-        String params = waypoints + "&" + sensor;
-        String output = "json";
-        String url2 = "https://maps.googleapis.com/maps/api/directions/"
-                + output + "?" + params;
-        Log.d("url", url2);
-        return url2;
-    }
 
 
     private String requestDirection(String reqUrl) throws IOException {

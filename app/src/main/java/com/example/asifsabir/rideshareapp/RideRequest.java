@@ -20,6 +20,11 @@ public class RideRequest {
     public String rideStatus;
     public String key;
 
+    public String fromLat;
+    public String fromLon;
+    public String toLat;
+    public String toLon;
+
 
     public RideRequest() {
         //Default constructor for parsing datasnapshot
@@ -27,7 +32,8 @@ public class RideRequest {
 
     public RideRequest(String riderName, String riderPhone, String riderNid, String riderRating,
                        String driverName, String driverPhone, String driverNid, String driverRating,
-                       String distance, String fare, String rideStatus,String key) {
+                       String distance, String fare, String rideStatus,String key,
+                       String fromLat,String fromLon,String toLat,String toLon) {
 
         this.riderName = riderName;
         this.riderPhone = riderPhone;
@@ -43,6 +49,11 @@ public class RideRequest {
         this.fare = fare;
         this.rideStatus = rideStatus;
         this.key = key;
+
+        this.fromLat=fromLat;
+        this.fromLon=fromLon;
+        this.toLat=toLat;
+        this.toLon=toLon;
     }
 
 }
