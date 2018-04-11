@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ride Share App</string>
+    <string name="app_name">Ride Share</string>
     <string-array name="bank_names_array">
         <item>Please select Your Bank</item>
         <item>AB Bank Ltd</item>

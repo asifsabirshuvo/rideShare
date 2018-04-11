@@ -51,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     ArrayList<LatLng> listPoints;
     Button btnReqRides;
-    TextView tvFare, tvDistance,tvNotDistance;
+    TextView tvFare, tvDistance;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     String riderName, riderNid, riderRating, riderPhone;
     int fare;
@@ -66,7 +66,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnReqRides = (Button) findViewById(R.id.button_req_riders);
         tvDistance = (TextView) findViewById(R.id.tv_distance);
         tvFare = (TextView) findViewById(R.id.tv_fare);
-        tvNotDistance = (TextView)findViewById(R.id.tv_not_distance);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -191,7 +190,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
                     taskRequestDirections.execute(url);
 
-                    //making second marker
+                    /*making second marker
 
                     double midLat = (listPoints.get(0).latitude + listPoints.get(1).latitude) / 1.999701646;
                     double midLon = (listPoints.get(0).longitude + listPoints.get(1).longitude) / 1.999921833;
@@ -252,19 +251,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String url8 = getRequestUrl(new LatLng(22.357517670866102,91.83795693505704), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections8 = new TaskRequestDirections();
                     taskRequestDirections8.execute(url8);
-
+                    */
                     //rendering not taken ppaths
 
-                    double notDist1 = showDistance(listPoints.get(0),new LatLng(midLat,midLon))
-                            +showDistance(new LatLng(midLat,midLon),listPoints.get(1))+1;
 
-                    double notDist2 = showDistance(listPoints.get(0),new LatLng(midLat2,midLon2))
-                            +showDistance(new LatLng(midLat,midLon),listPoints.get(1))+1;
-
-                    tvNotDistance.setText(String.format( "%.2f", notDist1 )+"KM\n"+
-                            String.format( "%.2f", notDist1+0.36 )+"KM\n"+
-                            String.format( "%.2f", notDist1+0.78 )+"KM\n"+
-                            String.format( "%.2f", notDist2+0.86 )+"KM");
                 }
             }
         });

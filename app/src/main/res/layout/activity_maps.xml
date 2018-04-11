@@ -42,18 +42,7 @@
                 android:text="Estimated\nDistance"
                 android:textColor="@android:color/black" />
 
-            <TextView
-                android:id="@+id/tv_not_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="5dp"
-                android:drawableTint="@android:color/holo_blue_dark"
-                android:fontFamily="monospace"
-                android:gravity="center"
-                android:text="Declined \nroutes"
-                android:textColor="@android:color/holo_red_dark"
-                 />
+
 
         </LinearLayout>
 
